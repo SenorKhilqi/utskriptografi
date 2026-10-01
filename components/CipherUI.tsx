@@ -84,7 +84,7 @@ export default function CipherUI({ algoType, title }: { algoType: string, title:
             }
         }
 
-        let outBytes = new Uint8Array();
+        let outBytes: any = new Uint8Array();
         if (algo === 'extended') outBytes = extendedVigenereCipher(dataToProcess, keyInput, action === 'decrypt');
         else if (algo === 'super') outBytes = superEncryptionCipher(dataToProcess, keyInput, action === 'decrypt');
         else if (algo === 'enigma') outBytes = enigmaCipher(dataToProcess, keyInput, action === 'decrypt');
@@ -113,7 +113,7 @@ export default function CipherUI({ algoType, title }: { algoType: string, title:
       const arrayBuffer = await file.arrayBuffer();
       let data = new Uint8Array(arrayBuffer);
       
-      let outBytes = new Uint8Array();
+      let outBytes: any = new Uint8Array();
       let originalExt = '';
 
       if (action === 'encrypt') {
