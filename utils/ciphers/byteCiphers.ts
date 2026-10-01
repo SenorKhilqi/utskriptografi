@@ -1,5 +1,5 @@
 // --- 3. EXTENDED VIGENERE CIPHER (256 ASCII/BYTES) ---
-export const extendedVigenereCipher = (data: Uint8Array, key: string, decrypt = false): Uint8Array => {
+export const extendedVigenereCipher = (data: any, key: string, decrypt = false): Uint8Array => {
   if (data.length === 0 || key.length === 0) return data;
 
   const result = new Uint8Array(data.length);
@@ -18,7 +18,7 @@ export const extendedVigenereCipher = (data: Uint8Array, key: string, decrypt = 
 };
 
 // --- COLUMNAR TRANSPOSITION (for Super Encryption) ---
-const columnarTransposition = (data: Uint8Array, key: string, decrypt = false): Uint8Array => {
+const columnarTransposition = (data: any, key: string, decrypt = false): Uint8Array => {
   if (data.length === 0 || key.length === 0) return data;
   
   const keyLength = key.length;
@@ -78,7 +78,7 @@ const columnarTransposition = (data: Uint8Array, key: string, decrypt = false): 
 };
 
 // --- 7. SUPER ENCRYPTION ---
-export const superEncryptionCipher = (data: Uint8Array, key: string, decrypt = false): Uint8Array => {
+export const superEncryptionCipher = (data: any, key: string, decrypt = false): Uint8Array => {
   if (decrypt) {
     const transposed = columnarTransposition(data, key, true);
     return extendedVigenereCipher(transposed, key, true);
@@ -89,7 +89,7 @@ export const superEncryptionCipher = (data: Uint8Array, key: string, decrypt = f
 };
 
 // --- 8. ENIGMA CIPHER (Simplified 256-Byte Version) ---
-export const enigmaCipher = (data: Uint8Array, key: string, decrypt = false): Uint8Array => {
+export const enigmaCipher = (data: any, key: string, decrypt = false): Uint8Array => {
   // Simplified Enigma with 256 possible byte values instead of 26 alphabet
   if (data.length === 0 || key.length === 0) return data;
   
