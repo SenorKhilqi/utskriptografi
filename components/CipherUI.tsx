@@ -176,98 +176,105 @@ export default function CipherUI({ algoType, title }: { algoType: string, title:
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="bg-blue-600 px-6 py-4">
-          <h2 className="text-2xl font-bold text-white text-center">{title}</h2>
-        </div>
-        
-        <div className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="col-span-2 md:col-span-1">
-              <label className="block text-sm font-medium text-gray-700">Input Mode</label>
-              <div className="mt-2 flex items-center space-x-4">
-                <label className="inline-flex items-center">
-                  <input type="radio" className="form-radio text-blue-600" name="mode" value="text" checked={mode === 'text'} onChange={() => setMode('text')} />
-                  <span className="ml-2">Text</span>
-                </label>
-                <label className="inline-flex items-center">
-                  <input type="radio" className="form-radio text-blue-600" name="mode" value="file" checked={mode === 'file'} onChange={() => setMode('file')} />
-                  <span className="ml-2">File</span>
-                </label>
-              </div>
+    <div className="min-h-screen py-12 px-4 sm:px-8 max-w-3xl mx-auto">
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">{title}</h2>
+        <p className="text-slate-500 mt-1">Configure your parameters and run the encryption.</p>
+      </div>
+
+      <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Input Mode</label>
+            <div className="flex p-1 bg-slate-100 rounded-lg">
+              <button
+                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-colors ${mode === 'text' ? 'bg-white text-slate-900 shadow-sm border border-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}
+                onClick={() => setMode('text')}
+              >
+                Text
+              </button>
+              <button
+                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-colors ${mode === 'file' ? 'bg-white text-slate-900 shadow-sm border border-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}
+                onClick={() => setMode('file')}
+              >
+                File
+              </button>
             </div>
           </div>
 
           <div>
-             <label className="block text-sm font-medium text-gray-700">Key</label>
+             <label className="block text-sm font-medium text-slate-700 mb-2">Secret Key</label>
              {algo === 'affine' ? (
-                <div className="flex space-x-2 mt-1">
-                   <input type="number" placeholder="Multiplier (m)" className="block w-full border border-gray-300 rounded-md p-2" value={affineM} onChange={e => setAffineM(e.target.value)} />
-                   <input type="number" placeholder="Shift (b)" className="block w-full border border-gray-300 rounded-md p-2" value={affineB} onChange={e => setAffineB(e.target.value)} />
+                <div className="flex space-x-2">
+                   <input type="number" placeholder="m" className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition-shadow" value={affineM} onChange={e => setAffineM(e.target.value)} />
+                   <input type="number" placeholder="b" className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition-shadow" value={affineB} onChange={e => setAffineB(e.target.value)} />
                 </div>
              ) : algo === 'hill' ? (
-                 <textarea placeholder="3,3\n2,5" className="mt-1 block w-full border border-gray-300 rounded-md p-2" rows={2} value={hillMatrixStr} onChange={e => setHillMatrixStr(e.target.value)} />
+                 <textarea placeholder="3,3\n2,5" className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition-shadow resize-none" rows={2} value={hillMatrixStr} onChange={e => setHillMatrixStr(e.target.value)} />
              ) : (
-                <input type="text" className="mt-1 block w-full border border-gray-300 rounded-md p-2" value={keyInput} onChange={(e) => setKeyInput(e.target.value)} placeholder="Secret Key" />
+                <input type="text" className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition-shadow" value={keyInput} onChange={(e) => setKeyInput(e.target.value)} placeholder="Key" />
              )}
           </div>
+        </div>
 
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">Input Data</label>
           {mode === 'text' ? (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Input Text (Plaintext / Ciphertext)</label>
-              <textarea className="mt-1 block w-full border border-gray-300 rounded-md p-2" rows={4} value={textInput} onChange={(e) => setTextInput(e.target.value)}></textarea>
-            </div>
+            <textarea className="w-full bg-white border border-slate-300 rounded-lg px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition-shadow resize-none" rows={4} value={textInput} onChange={(e) => setTextInput(e.target.value)} placeholder="Enter your text here..."></textarea>
           ) : (
-             <div>
-              <label className="block text-sm font-medium text-gray-700">Upload File</label>
-              <input type="file" className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+            <div className="flex items-center justify-center w-full">
+              <label className="flex flex-col items-center justify-center w-full h-32 border border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <p className="mb-1 text-sm text-slate-600 font-medium">Click to upload file</p>
+                  <p className="text-xs text-slate-500">{file ? file.name : "or drag and drop"}</p>
+                </div>
+                <input type="file" className="hidden" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+              </label>
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-3">
+          <button 
+            className="flex-1 bg-slate-900 text-white font-medium text-sm py-2.5 px-4 rounded-lg hover:bg-slate-800 transition-colors disabled:opacity-50"
+            onClick={() => mode === 'text' ? processText('encrypt') : processFile('encrypt')}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Processing...' : 'Encrypt'}
+          </button>
+          <button 
+            className="flex-1 bg-white border border-slate-300 text-slate-700 font-medium text-sm py-2.5 px-4 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-50"
+            onClick={() => mode === 'text' ? processText('decrypt') : processFile('decrypt')}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Processing...' : 'Decrypt'}
+          </button>
+        </div>
+
+        <div className="pt-8 border-t border-slate-200">
+          <h3 className="text-sm font-medium text-slate-700 mb-3">Output Result</h3>
+          {mode === 'text' ? (
+             <div className="relative group">
+               <textarea className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-4 text-slate-800 font-mono text-sm pr-20 focus:outline-none resize-none" rows={5} readOnly value={textOutput} placeholder="Result..."></textarea>
+               {textOutput && (
+                 <button 
+                   onClick={handleCopy} 
+                   className="absolute top-3 right-3 px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded-md text-xs font-medium shadow-sm hover:bg-slate-50 transition-colors"
+                 >
+                   {isCopied ? 'Copied' : 'Copy'}
+                 </button>
+               )}
+             </div>
+          ) : (
+             <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-lg">
+               <span className={`text-sm ${fileOutputBlob ? 'text-slate-900 font-medium' : 'text-slate-500'}`}>{fileOutputBlob ? 'File ready' : 'No output yet'}</span>
+               {fileOutputBlob && (
+                 <button onClick={downloadFile} className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-1.5 rounded-md text-sm font-medium transition-colors">
+                   Download
+                 </button>
+               )}
              </div>
           )}
-
-          <div className="flex space-x-4">
-            <button 
-              className="flex-1 bg-blue-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              onClick={() => mode === 'text' ? processText('encrypt') : processFile('encrypt')}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Processing...' : 'Encrypt'}
-            </button>
-            <button 
-              className="flex-1 bg-green-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-              onClick={() => mode === 'text' ? processText('decrypt') : processFile('decrypt')}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Processing...' : 'Decrypt'}
-            </button>
-          </div>
-
-          <div className="pt-6 border-t border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Output Result (Ciphertext / Plaintext)</h3>
-            {mode === 'text' ? (
-               <div className="relative">
-                 <textarea className="block w-full border border-gray-300 rounded-md p-2 bg-gray-50 font-mono text-sm pr-20" rows={5} readOnly value={textOutput} placeholder="Result will appear here..."></textarea>
-                 {textOutput && (
-                   <button 
-                     onClick={handleCopy} 
-                     className="absolute top-2 right-2 px-3 py-1 bg-white border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50 shadow-sm"
-                   >
-                     {isCopied ? 'Copied!' : 'Copy'}
-                   </button>
-                 )}
-               </div>
-            ) : (
-               <div className="flex items-center space-x-4">
-                 <span className="text-sm text-gray-500">{fileOutputBlob ? 'File ready to download' : 'No output yet'}</span>
-                 {fileOutputBlob && (
-                   <button onClick={downloadFile} className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700">
-                     Download Result
-                   </button>
-                 )}
-               </div>
-            )}
-          </div>
-
         </div>
       </div>
     </div>
